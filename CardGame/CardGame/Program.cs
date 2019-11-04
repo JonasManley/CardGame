@@ -12,10 +12,17 @@ namespace CardGame
         {
             CardDeck cardDeck = new CardDeck();
 
-            var deck = cardDeck.CardList;
-            foreach (var card in deck)
+            //var deck = cardDeck.CardList;
+            //foreach (var card in deck)
+            //{
+            //    Console.WriteLine(card);
+            //}
+            //Console.WriteLine("--------------------");
+
+            var list = cardDeck.Shuffel(new Random(), cardDeck.CardList);
+            foreach (var item in list)
             {
-                Console.WriteLine(card);
+                Console.WriteLine(item);
             }
 
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CardGame
 {
-    public class CardDeck 
+    public class CardDeck
     {
         private FileReader _fileReader;
         private List<Card> _cardList;
@@ -43,9 +44,25 @@ namespace CardGame
             }
         }
 
-        
 
-
+        public List<Card> Shuffel(Random r, List<Card> source)
+        {
+            List<Card> list = new List<Card>();
+            foreach (var item in source)
+            {
+                var i = r.Next(list.Count + 1);
+                if (i == list.Count)
+                {
+                    list.Add(item);
+                }
+                else
+                {
+                    var temp = list[i];
+                    list[i] = item;
+                    list.Add(temp);
+                }
+            }
+            return list;
+        }
     }
-
 }
