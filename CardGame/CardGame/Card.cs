@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace CardGame
 {
-    class Card
+    public class Card
     {
-        private int _cardValue;
+        private string _cardValue;
         private string _cardColor;
 
-        public Card(int cardvalue, string color)
+        public Card(string cardvalue, string color)
         {
             _cardValue = cardvalue;
             _cardColor = color;
         }
 
-        public int cardValue
+        public string cardValue
         {
             get { return _cardValue; }
             set { _cardValue = value; }
@@ -28,5 +28,5 @@ namespace CardGame
             get { return _cardColor; }
             set { _cardColor = value; }
         }
-
     }
+}

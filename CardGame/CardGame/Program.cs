@@ -10,6 +10,9 @@ namespace CardGame
     {
         static void Main(string[] args)
         {
+           
+
+            Console.ReadLine();
         }
     }
 }
