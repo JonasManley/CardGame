@@ -45,24 +45,25 @@ namespace CardGame
         }
 
 
-        public List<Card> Shuffel(Random r, List<Card> source)
+        //Fisher–Yates shuffle algorithm - https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_.22inside-out.22_algorithm 
+        public List<Card> Shuffel(Random randomgenerator, List<Card> source)
         {
-            List<Card> list = new List<Card>();
+            List<Card> shuffledList = new List<Card>();
             foreach (var item in source)
             {
-                var i = r.Next(list.Count + 1);
-                if (i == list.Count)
+                var i = randomgenerator.Next(shuffledList.Count + 1);
+                if (i == shuffledList.Count)
                 {
-                    list.Add(item);
+                    shuffledList.Add(item);
                 }
                 else
                 {
-                    var temp = list[i];
-                    list[i] = item;
-                    list.Add(temp);
+                    var temp = shuffledList[i];
+                    shuffledList[i] = item;
+                    shuffledList.Add(temp);
                 }
             }
-            return list;
+            return shuffledList;
         }
     }
 }
