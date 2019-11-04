@@ -10,7 +10,8 @@ namespace CardGame
     {
         static void Main(string[] args)
         {
-           
+            FileReader filereader = new FileReader("C:/Users/Jonas/source/repos/CardGame/Cards.txt");
+
 
             Console.ReadLine();
         }

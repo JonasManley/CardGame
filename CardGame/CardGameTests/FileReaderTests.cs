@@ -16,10 +16,11 @@ namespace CardGame.Tests
         {
             //Arrange 
             FileReader filereader = new FileReader("C:/Users/Jonas/source/repos/CardGame/Cards.txt");
-            int cardListLength = filereader.cardListLength;
+            CardDeck cardDeck = new CardDeck();
+            var lenght = cardDeck.cardListLength;
             //Act 
             //Assert
-            Assert.AreEqual(cardListLength, 14);
+            Assert.AreEqual(lenght, 52);
         }
 
         [TestMethod()]
@@ -27,7 +28,7 @@ namespace CardGame.Tests
         {
             //Arrange 
             FileReader filereader = new FileReader("C:/Users/Jonas/source/repos/CardGame/Cards.txt");
-            var expectedString = "hearts1";
+            var expectedString = "hearts2";
             var actuelString = filereader.getCardLine(0).Replace(" ", ""); ;
             //Act 
             //Assert
