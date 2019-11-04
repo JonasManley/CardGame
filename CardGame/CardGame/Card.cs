@@ -28,5 +28,10 @@ namespace CardGame
             get { return _cardColor; }
             set { _cardColor = value; }
         }
+
+        public override string ToString()
+        {
+            return $"{_cardValue} {_cardColor}";
+        }
     }
 }

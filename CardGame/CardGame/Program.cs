@@ -10,7 +10,13 @@ namespace CardGame
     {
         static void Main(string[] args)
         {
-            FileReader filereader = new FileReader("C:/Users/Jonas/source/repos/CardGame/Cards.txt");
+            CardDeck cardDeck = new CardDeck();
+
+            var deck = cardDeck.CardList;
+            foreach (var card in deck)
+            {
+                Console.WriteLine(card);
+            }
 
 
             Console.ReadLine();

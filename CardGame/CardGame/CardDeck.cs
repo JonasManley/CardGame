@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CardGame
 {
-    public class CardDeck
+    public class CardDeck 
     {
         private FileReader _fileReader;
         private List<Card> _cardList;
@@ -16,6 +16,15 @@ namespace CardGame
             _fileReader = new FileReader("C:/Users/Jonas/source/repos/CardGame/Cards.txt");
             _cardList = new List<Card>();
             CreateDeck();
+        }
+        public List<Card> CardList
+        {
+            get { return _cardList; }
+        }
+
+        public int cardListLength
+        {
+            get { return _cardList.Count(); }
         }
 
         private void CreateDeck()
@@ -34,10 +43,9 @@ namespace CardGame
             }
         }
 
-            public int cardListLength
-        {
-            get { return _cardList.Count(); }
-        }
+        
+
+
     }
 
 }
