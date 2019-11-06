@@ -74,6 +74,7 @@ namespace CardGame.Games
                     Console.WriteLine($"wars done:" + _stats.warDones);
                     Console.WriteLine($"Games Won by Player A:" + _stats.PlayerARoundsWon);
                     Console.WriteLine($"Games Won by Player B:" + _stats.PlayerBRoundsWon);
+                    Console.WriteLine($"Percentage For occurrence of wars:" + _stats.percentageForWar());
                     break;
                 case ConsoleKey.X:
                     Console.Clear();
@@ -202,14 +203,14 @@ namespace CardGame.Games
         private void WAR()
         {
 
-            if (_aCards.Count <= 3)
+            if (_aCards.Count <= 4)
             {
                 Console.WriteLine("A does not have enough cards to play war...");
                 Console.Clear();
                 Console.WriteLine("----B WINS!!!----");
                 warPossible = false;
             }
-            else if (_bCards.Count <= 3)
+            else if (_bCards.Count <= 4)
             {
                 Console.WriteLine("B does not have enough cards to play war...");
                 Console.Clear();
@@ -218,11 +219,25 @@ namespace CardGame.Games
             }
             for (int i = 0; i < 3; i++)
             {
+                if (_aCards.Count <= 3)
+                {
+                    Console.WriteLine("A does not have enough cards to play war...");
+                    Console.Clear();
+                    Console.WriteLine("----B WINS!!!----");
+                    warPossible = false;
+                }
                 _warPot.Add(_aCards[i]);
 
             }
             for (int i = 0; i < 3; i++)
             {
+                if (_bCards.Count <= 3)
+                {
+                    Console.WriteLine("B does not have enough cards to play war...");
+                    Console.Clear();
+                    Console.WriteLine("----A WINS!!!----");
+                    warPossible = false;
+                }
                 _warPot.Add(_bCards[i]);
 
             }

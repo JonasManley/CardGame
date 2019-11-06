@@ -42,5 +42,10 @@ namespace CardGame
             set { _playerBRoundsWon = value; }
         }
 
+        public double percentageForWar()
+        {
+            return (_warDones / _battlesDone)*100;
+        }
+        
     }
 }
