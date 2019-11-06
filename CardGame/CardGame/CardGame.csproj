@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Card.cs" />
+    <Compile Include="Model\Card.cs" />
     <Compile Include="CardDeck.cs" />
     <Compile Include="FileReader.cs" />
     <Compile Include="Program.cs" />

@@ -14,7 +14,7 @@ namespace CardGame
             CardDeck cardDeck = new CardDeck();
             Console.WriteLine("Reading from textfile...");
             Thread.Sleep(2000);
-            var deck = cardDeck.CardList;
+            var deck = cardDeck.cardList;
             foreach (var card in deck)
             {
                 Console.WriteLine(card);
@@ -24,8 +24,8 @@ namespace CardGame
             Console.Clear(); Console.WriteLine("Shuffling deck..."); Console.WriteLine();
             Thread.Sleep(2000);
 
-            var list = cardDeck.Shuffel(new Random(), cardDeck.CardList);
-            foreach (var item in list)
+            cardDeck.Shuffel(new Random(), cardDeck.cardList);
+            foreach (var item in cardDeck.shuffledCardList)
             {
                 Console.WriteLine(item);
             }

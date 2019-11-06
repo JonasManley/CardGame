@@ -22,14 +22,22 @@ namespace CardGame
 
             CreateDeck();
         }
-        public List<Card> CardList
+        public List<Card> cardList
         {
             get { return _cardList; }
+        }
+        public List<Card> shuffledCardList
+        {
+            get { return _shuffledList; }
         }
 
         public int cardListLength
         {
             get { return _cardList.Count(); }
+        }
+        public int shuffledCardListLength
+        {
+            get { return _shuffledList.Count(); }
         }
 
         private void CreateDeck()
@@ -50,9 +58,8 @@ namespace CardGame
 
 
         //Fisher–Yates shuffle algorithm - https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_.22inside-out.22_algorithm 
-        public List<Card> Shuffel(Random randomgenerator, List<Card> source)
+        public void Shuffel(Random randomgenerator, List<Card> source)
         {
-            
             foreach (var item in source)
             {
                 var i = randomgenerator.Next(_shuffledList.Count + 1);
@@ -67,7 +74,6 @@ namespace CardGame
                     _shuffledList.Add(temp);
                 }
             }
-            return _shuffledList;
         }
     }
 }
