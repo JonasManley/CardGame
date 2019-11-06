@@ -37,7 +37,7 @@ namespace CardGame
             Welcome welcome = new Welcome();
             Player A = new Player("Jonas");
             Player B = new Player("Valde");
-            FiveHundred fiveHundred = new FiveHundred(A, B);
+            WarGame fiveHundred = new WarGame(A, B);
 
             welcome.WelcomeText();
 

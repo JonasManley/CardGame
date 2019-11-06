@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CardGame.Games
 {
-    class FiveHundred
+    class WarGame
     {
         private Player _a;
         private Player _b;
@@ -28,7 +28,7 @@ namespace CardGame.Games
 
         private Stats _stats = new Stats();
 
-        public FiveHundred(Player A, Player B)
+        public WarGame(Player A, Player B)
         {
             _LoadedCardDeck = new CardDeck();
             _cardList = _LoadedCardDeck.cardList;
@@ -109,7 +109,7 @@ namespace CardGame.Games
                 Console.ReadLine();
                 Console.WriteLine("Both playes put down 3 cards. ");
 
-                HandlingFaceCards();
+                WAR();
             }
         }
     
@@ -133,6 +133,7 @@ namespace CardGame.Games
                     equivalentValueB = item.Value;
                 }
             }
+
             if (equivalentValueA > equivalentValueB)
             {
                 if (_warPot.Count != 0)
@@ -171,29 +172,16 @@ namespace CardGame.Games
                 Console.WriteLine("Both playes put down 3 cards. ");
 
                 WAR();
-                if (warPossible == false)
-                {
-                    return;
-                }
-                if (_aCards[0].cardValue != "J" && _aCards[0].cardValue != "D" && _aCards[0].cardValue != "K" && _aCards[0].cardValue != "A" &&
-                     _bCards[0].cardValue != "J" && _bCards[0].cardValue != "D" && _bCards[0].cardValue != "K" && _bCards[0].cardValue != "A")
-                {
-                    HandlingNormalCard();
-                }
-                else
-                {
-                    HandlingFaceCards();
-                }
             }
         }
 
 
 
-        
+
         bool warPossible = true;
         private void WAR()
         {
-            if(_aCards.Count <= 3)
+            if (_aCards.Count <= 3)
             {
                 Console.WriteLine("A does not have enough cards to play war...");
                 Console.Clear();
@@ -212,26 +200,15 @@ namespace CardGame.Games
             for (int i = 0; i < 3; i++)
             {
                 _warPot.Add(_aCards[i]);
-               
+
             }
             for (int i = 0; i < 3; i++)
             {
                 _warPot.Add(_bCards[i]);
 
             }
-            _aCards.RemoveRange(0, 2);
-            _bCards.RemoveRange(0, 2);
-
-            
-            if (_aCards[0].cardValue != "J" && _aCards[0].cardValue != "D" && _aCards[0].cardValue != "K" && _aCards[0].cardValue != "A" &&
-                    _bCards[0].cardValue != "J" && _bCards[0].cardValue != "D" && _bCards[0].cardValue != "K" && _bCards[0].cardValue != "A")
-            {
-                HandlingNormalCard();
-            }
-            else
-            {
-                HandlingFaceCards();
-            }
+            _aCards.RemoveRange(0, 3);
+            _bCards.RemoveRange(0, 3);
         }
 
         private void HandlingWarPot(List<Card> pot, List<Card> WinnerCardList, List<Card> LooserCardList)
