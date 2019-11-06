@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CardGame.Model
 {
-    class Player
+    public class Player
     {
         private string _name;
         private List<Card> _assignedCards;
