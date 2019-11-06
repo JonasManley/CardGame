@@ -44,8 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Card.cs" />
-    <Compile Include="CardDeck.cs" />
+    <Compile Include="Model\CardDeck.cs" />
     <Compile Include="FileReader.cs" />
+    <Compile Include="Model\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
