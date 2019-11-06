@@ -34,16 +34,16 @@ namespace CardGame
             //}
 
 
-            Welcome welcome = new Welcome();
+           
             Player A = new Player("Jonas");
             Player B = new Player("Valde");
             WarGame fiveHundred = new WarGame(A, B);
 
-            welcome.WelcomeText();
+            
 
             fiveHundred.play();
 
-            welcome.EndText();
+            
 
 
             Console.ReadLine();

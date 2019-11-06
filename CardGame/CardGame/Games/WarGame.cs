@@ -1,4 +1,5 @@
 ﻿using CardGame.Model;
+using CardGame.Text;
 using Model.CardGame;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ namespace CardGame.Games
         private List<Card> _pot = new List<Card>();
         private List<Card> _nextCardPotA = new List<Card>();
         private List<Card> _nextCardPotB = new List<Card>();
+        private Welcome welcome = new Welcome();
 
         private Stats _stats = new Stats();
 
@@ -41,6 +43,7 @@ namespace CardGame.Games
 
         public void play()
         {
+            welcome.WelcomeText();
             Setup();
 
             GameLogic();
@@ -49,7 +52,7 @@ namespace CardGame.Games
 
         private void GameLogic()
         {
-            while (_aCards.Count > 0 || _bCards.Count > 0)
+            while (_aCards.Count > 1 && _bCards.Count > 1 && warPossible == true)
             {
                 if (_aCards[0].cardValue != "J" && _aCards[0].cardValue != "D" && _aCards[0].cardValue != "K" && _aCards[0].cardValue != "A" &&
                       _bCards[0].cardValue != "J" && _bCards[0].cardValue != "D" && _bCards[0].cardValue != "K" && _bCards[0].cardValue != "A")
@@ -62,8 +65,22 @@ namespace CardGame.Games
                 }
             }
             Console.WriteLine("Game is fisished, pres enter to see stats or X to quit ");
-            while (Console.ReadKey().Key != ConsoleKey.X) { }
-            Console.Clear();
+
+            var input = Console.ReadKey();
+            switch (input.Key) //Switch on Key enum
+            {
+                case ConsoleKey.Enter:
+                    Console.WriteLine($"Total Games Done:"+_stats.battlesDone);
+                    Console.WriteLine($"wars done:" + _stats.warDones);
+                    Console.WriteLine($"Games Won by Playe A:" + _stats.PlayerARoundsWon);
+                    Console.WriteLine($"Games Won by Playe B:" + _stats.PlayerBRoundsWon);
+                    break;
+                case ConsoleKey.X:
+                    Console.Clear();
+                    welcome.EndText();
+                    break;
+            }
+            
         }
 
 
@@ -82,8 +99,8 @@ namespace CardGame.Games
                 }
                 Console.WriteLine($"A has: {_aCards[0].cardValue} and B: {_bCards[0].cardValue}");
                 Console.WriteLine("A wins");
-                _stats.PlayerARoundsWon += 1; 
-                
+                _stats.PlayerARoundsWon += 1;
+                _stats.battlesDone += 1;
 
                 HandlingPot(_pot, _aCards, _bCards);
             }
@@ -100,15 +117,17 @@ namespace CardGame.Games
                 Console.WriteLine($"A has: {_aCards[0].cardValue} and B: {_bCards[0].cardValue}");
                 Console.WriteLine("B wins");
                 _stats.PlayerBRoundsWon += 1;
+                _stats.battlesDone += 1;
 
                 HandlingPot(_pot, _bCards, _aCards);
             }
             else if (Convert.ToInt32(_aCards[0].cardValue) == Convert.ToInt32(_bCards[0].cardValue))
             {
                 Console.WriteLine("WAR!!!!!! press enter when your ready");
-                Console.ReadLine();
+                //Console.ReadLine();
                 Console.WriteLine("Both playes put down 3 cards. ");
 
+                _stats.warDones += 1;
                 WAR();
             }
         }
@@ -147,6 +166,7 @@ namespace CardGame.Games
                 Console.WriteLine($"A has: {_aCards[0].cardValue} and B: {_bCards[0].cardValue}");
                 Console.WriteLine("A wins");
                 _stats.PlayerARoundsWon += 1;
+                _stats.battlesDone += 1;
 
                 HandlingPot(_pot, _aCards, _bCards);
             }
@@ -163,6 +183,7 @@ namespace CardGame.Games
                 Console.WriteLine($"A has: {_aCards[0].cardValue} and B: {_bCards[0].cardValue}");
                 Console.WriteLine("B wins");
                 _stats.PlayerBRoundsWon += 1;
+                _stats.battlesDone += 1;
 
                 HandlingPot(_pot, _bCards, _aCards);
             }
@@ -171,31 +192,29 @@ namespace CardGame.Games
                 Console.WriteLine("WAR!!!!!! press enter when your ready");
                 Console.WriteLine("Both playes put down 3 cards. ");
 
+                _stats.warDones += 1;
                 WAR();
             }
         }
 
 
-
-
         bool warPossible = true;
         private void WAR()
         {
+
             if (_aCards.Count <= 3)
             {
                 Console.WriteLine("A does not have enough cards to play war...");
                 Console.Clear();
                 Console.WriteLine("----B WINS!!!----");
                 warPossible = false;
-                return;
             }
-            if (_bCards.Count <= 3)
+            else if (_bCards.Count <= 3)
             {
                 Console.WriteLine("B does not have enough cards to play war...");
                 Console.Clear();
                 Console.WriteLine("----A WINS!!!----");
                 warPossible = false;
-                return;
             }
             for (int i = 0; i < 3; i++)
             {
