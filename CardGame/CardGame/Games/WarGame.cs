@@ -72,8 +72,8 @@ namespace CardGame.Games
                 case ConsoleKey.Enter:
                     Console.WriteLine($"Total Games Done:"+_stats.battlesDone);
                     Console.WriteLine($"wars done:" + _stats.warDones);
-                    Console.WriteLine($"Games Won by Playe A:" + _stats.PlayerARoundsWon);
-                    Console.WriteLine($"Games Won by Playe B:" + _stats.PlayerBRoundsWon);
+                    Console.WriteLine($"Games Won by Player A:" + _stats.PlayerARoundsWon);
+                    Console.WriteLine($"Games Won by Player B:" + _stats.PlayerBRoundsWon);
                     break;
                 case ConsoleKey.X:
                     Console.Clear();
