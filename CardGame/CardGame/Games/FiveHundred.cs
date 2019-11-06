@@ -26,6 +26,8 @@ namespace CardGame.Games
         private List<Card> _nextCardPotA = new List<Card>();
         private List<Card> _nextCardPotB = new List<Card>();
 
+        private Stats _stats = new Stats();
+
         public FiveHundred(Player A, Player B)
         {
             _LoadedCardDeck = new CardDeck();
@@ -59,6 +61,9 @@ namespace CardGame.Games
                     HandlingFaceCards();
                 }
             }
+            Console.WriteLine("Game is fisished, pres enter to see stats or X to quit ");
+            while (Console.ReadKey().Key != ConsoleKey.X) { }
+            Console.Clear();
         }
 
 
@@ -67,15 +72,35 @@ namespace CardGame.Games
 
             if (Convert.ToInt32(_aCards[0].cardValue) > Convert.ToInt32(_bCards[0].cardValue))
             {
+                if (_warPot.Count != 0)
+                {
+                    foreach (var card in _warPot)
+                    {
+                        _aCards.Add(card);
+                    }
+                    _warPot.Clear();
+                }
                 Console.WriteLine($"A has: {_aCards[0].cardValue} and B: {_bCards[0].cardValue}");
                 Console.WriteLine("A wins");
+                _stats.PlayerARoundsWon += 1; 
+                
 
                 HandlingPot(_pot, _aCards, _bCards);
             }
             else if (Convert.ToInt32(_aCards[0].cardValue) < Convert.ToInt32(_bCards[0].cardValue))
             {
+                if (_warPot.Count != 0)
+                {
+                    foreach (var card in _warPot)
+                    {
+                        _bCards.Add(card);
+                    }
+                    _warPot.Clear();
+                }
                 Console.WriteLine($"A has: {_aCards[0].cardValue} and B: {_bCards[0].cardValue}");
                 Console.WriteLine("B wins");
+                _stats.PlayerBRoundsWon += 1;
+
                 HandlingPot(_pot, _bCards, _aCards);
             }
             else if (Convert.ToInt32(_aCards[0].cardValue) == Convert.ToInt32(_bCards[0].cardValue))
@@ -110,22 +135,39 @@ namespace CardGame.Games
             }
             if (equivalentValueA > equivalentValueB)
             {
+                if (_warPot.Count != 0)
+                {
+                    foreach (var card in _warPot)
+                    {
+                        _aCards.Add(card);
+                    }
+                    _warPot.Clear();
+                }
                 Console.WriteLine($"A has: {_aCards[0].cardValue} and B: {_bCards[0].cardValue}");
                 Console.WriteLine("A wins");
+                _stats.PlayerARoundsWon += 1;
 
                 HandlingPot(_pot, _aCards, _bCards);
             }
             if (equivalentValueA < equivalentValueB)
             {
+                if (_warPot.Count != 0)
+                {
+                    foreach (var card in _warPot)
+                    {
+                        _bCards.Add(card);
+                    }
+                    _warPot.Clear();
+                }
                 Console.WriteLine($"A has: {_aCards[0].cardValue} and B: {_bCards[0].cardValue}");
                 Console.WriteLine("B wins");
+                _stats.PlayerBRoundsWon += 1;
 
                 HandlingPot(_pot, _bCards, _aCards);
             }
             else if (equivalentValueA == equivalentValueB)
             {
                 Console.WriteLine("WAR!!!!!! press enter when your ready");
-                Console.ReadLine();
                 Console.WriteLine("Both playes put down 3 cards. ");
 
                 WAR();
@@ -147,33 +189,49 @@ namespace CardGame.Games
 
 
 
-        string WhoWon;
+        
         bool warPossible = true;
         private void WAR()
         {
-            if(_a.assignedCards.Count <= 3)
+            if(_aCards.Count <= 3)
             {
                 Console.WriteLine("A does not have enough cards to play war...");
                 Console.Clear();
                 Console.WriteLine("----B WINS!!!----");
                 warPossible = false;
-                WhoWon = "B";
+                return;
             }
-            if (_b.assignedCards.Count <= 3)
+            if (_bCards.Count <= 3)
             {
                 Console.WriteLine("B does not have enough cards to play war...");
                 Console.Clear();
                 Console.WriteLine("----A WINS!!!----");
-                WhoWon = "A";
                 warPossible = false;
+                return;
             }
             for (int i = 0; i < 3; i++)
             {
                 _warPot.Add(_aCards[i]);
+               
+            }
+            for (int i = 0; i < 3; i++)
+            {
                 _warPot.Add(_bCards[i]);
+
             }
             _aCards.RemoveRange(0, 2);
             _bCards.RemoveRange(0, 2);
+
+            
+            if (_aCards[0].cardValue != "J" && _aCards[0].cardValue != "D" && _aCards[0].cardValue != "K" && _aCards[0].cardValue != "A" &&
+                    _bCards[0].cardValue != "J" && _bCards[0].cardValue != "D" && _bCards[0].cardValue != "K" && _bCards[0].cardValue != "A")
+            {
+                HandlingNormalCard();
+            }
+            else
+            {
+                HandlingFaceCards();
+            }
         }
 
         private void HandlingWarPot(List<Card> pot, List<Card> WinnerCardList, List<Card> LooserCardList)

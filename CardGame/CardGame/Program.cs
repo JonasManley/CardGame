@@ -1,5 +1,6 @@
 ﻿using CardGame.Games;
 using CardGame.Model;
+using CardGame.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,12 +34,16 @@ namespace CardGame
             //}
 
 
+            Welcome welcome = new Welcome();
             Player A = new Player("Jonas");
             Player B = new Player("Valde");
-
             FiveHundred fiveHundred = new FiveHundred(A, B);
 
+            welcome.WelcomeText();
+
             fiveHundred.play();
+
+            welcome.EndText();
 
 
             Console.ReadLine();
