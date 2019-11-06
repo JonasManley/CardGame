@@ -11,7 +11,7 @@ namespace Model.CardGame
         private string _cardValue;
         private string _cardColor;
 
-        public Card(string cardvalue, string color)
+        public Card(string color, string cardvalue)
         {
             _cardValue = cardvalue;
             _cardColor = color;

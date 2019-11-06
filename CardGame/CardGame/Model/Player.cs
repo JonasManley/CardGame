@@ -10,11 +10,11 @@ namespace CardGame.Model
     public class Player
     {
         private string _name;
-        private List<Card> _assignedCards;
+        private List<Card> _assignedCards = new List<Card>();
 
         public Player(string name)
         {
-            _assignedCards = new List<Card>();
+            _name = name;
         }
 
         /// <summary>

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CardGame.Games
@@ -12,11 +13,18 @@ namespace CardGame.Games
     {
         private Player _a;
         private Player _b;
-        private List<Card> _aCards;
-        private List<Card> _bCards;
+
         private CardDeck _LoadedCardDeck;
+
         private List<Card> _cardList;
         private List<Card> _cardListShuffled;
+
+        private List<Card> _aCards;
+        private List<Card> _bCards;
+        private List<Card> _warPot = new List<Card>();
+        private List<Card> _pot = new List<Card>();
+        private List<Card> _nextCardPotA = new List<Card>();
+        private List<Card> _nextCardPotB = new List<Card>();
 
         public FiveHundred(Player A, Player B)
         {
@@ -25,28 +33,184 @@ namespace CardGame.Games
             _cardListShuffled = _LoadedCardDeck.shuffledCardList;
             _a = A;
             _b = B;
-        }
-
-        private void GameLogic()
-        {
-            while(_aCards.Count > 0 || _bCards.Count > 0)
-            {
-                if (_aCards.IndexOf[0] > _bCards.IndexOf[0])
-                {
-
-                }
-                {
-
-                }
-               
-            }
-
+            _aCards = _a.assignedCards;
+            _bCards = _b.assignedCards;
         }
 
         public void play()
         {
             Setup();
 
+            GameLogic();
+        }
+
+
+        private void GameLogic()
+        {
+            while (_aCards.Count > 0 || _bCards.Count > 0)
+            {
+                if (_aCards[0].cardValue != "J" && _aCards[0].cardValue != "D" && _aCards[0].cardValue != "K" && _aCards[0].cardValue != "A" &&
+                      _bCards[0].cardValue != "J" && _bCards[0].cardValue != "D" && _bCards[0].cardValue != "K" && _bCards[0].cardValue != "A")
+                {
+                    HandlingNormalCard();
+                }
+                else
+                {
+                    HandlingFaceCards();
+                }
+            }
+        }
+
+
+        private void HandlingNormalCard()
+        {
+
+            if (Convert.ToInt32(_aCards[0].cardValue) > Convert.ToInt32(_bCards[0].cardValue))
+            {
+                Console.WriteLine($"A has: {_aCards[0].cardValue} and B: {_bCards[0].cardValue}");
+                Console.WriteLine("A wins");
+
+                HandlingPot(_pot, _aCards, _bCards);
+            }
+            else if (Convert.ToInt32(_aCards[0].cardValue) < Convert.ToInt32(_bCards[0].cardValue))
+            {
+                Console.WriteLine($"A has: {_aCards[0].cardValue} and B: {_bCards[0].cardValue}");
+                Console.WriteLine("B wins");
+                HandlingPot(_pot, _bCards, _aCards);
+            }
+            else if (Convert.ToInt32(_aCards[0].cardValue) == Convert.ToInt32(_bCards[0].cardValue))
+            {
+                Console.WriteLine("WAR!!!!!! press enter when your ready");
+                Console.ReadLine();
+                Console.WriteLine("Both playes put down 3 cards. ");
+
+                HandlingFaceCards();
+            }
+        }
+    
+
+        private void HandlingFaceCards()
+        {
+
+            Dictionary<string, int> TableForFaceCards = new Dictionary<string, int>() { { "A", 14 }, { "K", 13 }, { "D", 12 }, { "J", 11 } };
+
+            int equivalentValueA = 0;
+            int equivalentValueB = 0;
+
+            foreach (var item in TableForFaceCards)
+            {
+                if (_aCards[0].cardValue == item.Key)
+                {
+                    equivalentValueA = item.Value;
+                }
+                if (_bCards[0].cardValue == item.Key)
+                {
+                    equivalentValueB = item.Value;
+                }
+            }
+            if (equivalentValueA > equivalentValueB)
+            {
+                Console.WriteLine($"A has: {_aCards[0].cardValue} and B: {_bCards[0].cardValue}");
+                Console.WriteLine("A wins");
+
+                HandlingPot(_pot, _aCards, _bCards);
+            }
+            if (equivalentValueA < equivalentValueB)
+            {
+                Console.WriteLine($"A has: {_aCards[0].cardValue} and B: {_bCards[0].cardValue}");
+                Console.WriteLine("B wins");
+
+                HandlingPot(_pot, _bCards, _aCards);
+            }
+            else if (equivalentValueA == equivalentValueB)
+            {
+                Console.WriteLine("WAR!!!!!! press enter when your ready");
+                Console.ReadLine();
+                Console.WriteLine("Both playes put down 3 cards. ");
+
+                WAR();
+                if (warPossible == false)
+                {
+                    return;
+                }
+                if (_aCards[0].cardValue != "J" && _aCards[0].cardValue != "D" && _aCards[0].cardValue != "K" && _aCards[0].cardValue != "A" &&
+                     _bCards[0].cardValue != "J" && _bCards[0].cardValue != "D" && _bCards[0].cardValue != "K" && _bCards[0].cardValue != "A")
+                {
+                    HandlingNormalCard();
+                }
+                else
+                {
+                    HandlingFaceCards();
+                }
+            }
+        }
+
+
+
+        string WhoWon;
+        bool warPossible = true;
+        private void WAR()
+        {
+            if(_a.assignedCards.Count <= 3)
+            {
+                Console.WriteLine("A does not have enough cards to play war...");
+                Console.Clear();
+                Console.WriteLine("----B WINS!!!----");
+                warPossible = false;
+                WhoWon = "B";
+            }
+            if (_b.assignedCards.Count <= 3)
+            {
+                Console.WriteLine("B does not have enough cards to play war...");
+                Console.Clear();
+                Console.WriteLine("----A WINS!!!----");
+                WhoWon = "A";
+                warPossible = false;
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                _warPot.Add(_aCards[i]);
+                _warPot.Add(_bCards[i]);
+            }
+            _aCards.RemoveRange(0, 2);
+            _bCards.RemoveRange(0, 2);
+        }
+
+        private void HandlingWarPot(List<Card> pot, List<Card> WinnerCardList, List<Card> LooserCardList)
+        {
+            _warPot.Add(_aCards[0]);
+            _warPot.Add(_bCards[0]);
+            WinnerCardList.Remove(WinnerCardList[0]);
+            LooserCardList.Remove(LooserCardList[0]);
+            foreach (var card in _warPot)
+            {
+                WinnerCardList.Add(card);
+            }
+            pot.Clear();
+        }
+
+        private void HandlingPot(List<Card> pot, List<Card> WinnerCardList, List<Card> LooserCardList)
+        {
+            pot.Add(_aCards[0]);
+            pot.Add(_bCards[0]);
+            WinnerCardList.Remove(WinnerCardList[0]);
+            LooserCardList.Remove(LooserCardList[0]);
+            foreach (var card in _pot)
+            {
+                WinnerCardList.Add(card);
+            }
+            pot.Clear();
+        }
+
+        private void HandlingCardFromTopToBottom()
+        {
+            _nextCardPotA.Add(_aCards[0]);
+            _nextCardPotB.Add(_bCards[0]);
+
+            _aCards.Remove(_aCards[0]);
+            _bCards.Remove(_bCards[0]);
+            _aCards.Add(_nextCardPotA[0]);
+            _bCards.Add(_nextCardPotB[0]);
         }
 
         private void Setup()
@@ -74,13 +238,14 @@ namespace CardGame.Games
             {
                 if (_a.cardAmount == _b.cardAmount)
                 {
-                    _a.Add(card);
+                    _a.assignedCards.Add(card);
                 }
                 else
                 {
-                    _b.Add(card);
+                    _b.assignedCards.Add(card);
                 }
             }
+            _cardListShuffled.Clear();
         }
     }
 }
