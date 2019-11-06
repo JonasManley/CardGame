@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model.CardGame;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +12,14 @@ namespace CardGame
     {
         private FileReader _fileReader;
         private List<Card> _cardList;
+        public List<Card> _shuffledList;
 
         public CardDeck()
         {
-            _fileReader = new FileReader("C:/Users/Jonas/source/repos/CardGame/Cards.txt");
+            _fileReader = new FileReader("C:/Users/Jonas/Documents/GitHub/CardGame/Cards.txt");
             _cardList = new List<Card>();
+            _shuffledList = new List<Card>();
+
             CreateDeck();
         }
         public List<Card> CardList
@@ -48,22 +52,22 @@ namespace CardGame
         //Fisher–Yates shuffle algorithm - https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_.22inside-out.22_algorithm 
         public List<Card> Shuffel(Random randomgenerator, List<Card> source)
         {
-            List<Card> shuffledList = new List<Card>();
+            
             foreach (var item in source)
             {
-                var i = randomgenerator.Next(shuffledList.Count + 1);
-                if (i == shuffledList.Count)
+                var i = randomgenerator.Next(_shuffledList.Count + 1);
+                if (i == _shuffledList.Count)
                 {
-                    shuffledList.Add(item);
+                    _shuffledList.Add(item);
                 }
                 else
                 {
-                    var temp = shuffledList[i];
-                    shuffledList[i] = item;
-                    shuffledList.Add(temp);
+                    var temp = _shuffledList[i];
+                    _shuffledList[i] = item;
+                    _shuffledList.Add(temp);
                 }
             }
-            return shuffledList;
+            return _shuffledList;
         }
     }
 }
