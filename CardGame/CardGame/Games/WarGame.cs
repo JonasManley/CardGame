@@ -14,9 +14,11 @@ namespace CardGame.Games
     {
         private Player _a;
         private Player _b;
+        private string winner = "";
 
         private CardDeck _LoadedCardDeck;
         private Shuffle _shuffle = new Shuffle();
+        private Stats _stats = new Stats();
 
         private List<Card> _cardList;
         private List<Card> _cardListShuffled;
@@ -28,8 +30,7 @@ namespace CardGame.Games
         private List<Card> _nextCardPotA = new List<Card>();
         private List<Card> _nextCardPotB = new List<Card>();
         private TextPresent TextPresent = new TextPresent();
-
-        private Stats _stats = new Stats();
+       
 
         public WarGame(Player A, Player B)
         {
@@ -68,7 +69,25 @@ namespace CardGame.Games
                     HandlingFaceCards();
                 }
             }
-            GameIsFinished();
+            if(_aCards.Count < 1)
+            {
+                Console.WriteLine("----------------------------------------------------");
+                TextPresent.CardStatusBWin(Convert.ToInt32(_aCards.Count), Convert.ToInt32(_bCards.Count));
+                Console.WriteLine("A have no more cards left. B");
+                winner = "B";
+                TextPresent.WinnerText(winner);
+                GameIsFinished();
+            }
+            else
+            {
+                Console.WriteLine("----------------------------------------------------");
+                TextPresent.CardStatusBWin(Convert.ToInt32(_aCards.Count), Convert.ToInt32(_bCards.Count));
+                Console.WriteLine("B have no more cards left.");
+                winner = "A";
+                TextPresent.WinnerText(winner);
+                GameIsFinished();
+            }
+            
         }
 
 
@@ -78,7 +97,7 @@ namespace CardGame.Games
             var input = Console.ReadKey();
             Console.Clear();
 
-            switch (input.Key) //Switch on Key enum
+            switch (input.Key) 
             {
                 case ConsoleKey.Enter:
                     Console.WriteLine("---------------------------------------------------------------------");
@@ -94,10 +113,12 @@ namespace CardGame.Games
                     switch (inputPlayagian.Key)
                     {
                         case ConsoleKey.Enter:
+                            Console.Clear();
                             ClearPreviousGame();
                             play();
                             break;
                         case ConsoleKey.X:
+                            Console.Clear();
                             TextPresent.EndText();
                             break;
                     }
@@ -110,20 +131,16 @@ namespace CardGame.Games
         }
 
         private void ClearPreviousGame()
-        {
-            _a.assignedCards.Clear();
-            _b.assignedCards.Clear();
+        { 
+             winner = "";
+            _LoadedCardDeck.cardList.Clear();
+            _stats = new Stats();
+            _cardList.Clear();
             _cardListShuffled.Clear();
             _aCards.Clear();
             _bCards.Clear();
             _warPot.Clear();
             _pot.Clear();
-            _nextCardPotA.Clear();
-            _nextCardPotB.Clear();
-            _stats.battlesDone = 0;
-            _stats.PlayerARoundsWon = 0;
-            _stats.PlayerBRoundsWon = 0;
-            _stats.warDones = 0;
         }
 
 
@@ -134,6 +151,7 @@ namespace CardGame.Games
             {
                 if (_warPot.Count != 0)
                 {
+                    Console.WriteLine("A wins the war!");
                     foreach (var card in _warPot)
                     {
                         _aCards.Add(card);
@@ -151,6 +169,7 @@ namespace CardGame.Games
             {
                 if (_warPot.Count != 0)
                 {
+                    Console.WriteLine("B wins the war!");
                     foreach (var card in _warPot)
                     {
                         _bCards.Add(card);
@@ -166,9 +185,11 @@ namespace CardGame.Games
             }
             else if (Convert.ToInt32(_aCards[0].cardValue) == Convert.ToInt32(_bCards[0].cardValue))
             {
-                Console.WriteLine("WAR!!!!!! press enter when your ready");
-                //Console.ReadLine();
-                Console.WriteLine("Both playes put down 3 cards. ");
+                Console.WriteLine("----------------------------------------------------");
+                Console.WriteLine("                WAR!!!!!!                 ");
+                Console.WriteLine($"a has: {_aCards[0].cardValue} and b has: {_bCards[0].cardValue }");
+                Console.WriteLine("----------------------------------------------------");
+                TextPresent.CardStatusBWin(Convert.ToInt32(_aCards.Count), Convert.ToInt32(_bCards.Count));
 
                 _stats.warDones += 1;
                 WAR();
@@ -200,6 +221,7 @@ namespace CardGame.Games
             {
                 if (_warPot.Count != 0)
                 {
+                    Console.WriteLine("A wins the war!");
                     foreach (var card in _warPot)
                     {
                         _aCards.Add(card);
@@ -217,6 +239,7 @@ namespace CardGame.Games
             {
                 if (_warPot.Count != 0)
                 {
+                    Console.WriteLine("B wins the war!");
                     foreach (var card in _warPot)
                     {
                         _bCards.Add(card);
@@ -232,28 +255,44 @@ namespace CardGame.Games
             }
             else if (equivalentValueA == equivalentValueB)
             {
-                Console.WriteLine("WAR!!!!!! press enter when your ready");
-                Console.WriteLine("Both playes put down 3 cards. ");
+                Console.WriteLine("----------------------------------------------------");
+                Console.WriteLine("                WAR!!!!!!                 ");
+                Console.WriteLine($"a has: {_aCards[0].cardValue} and b has: {_bCards[0].cardValue }");
+                Console.WriteLine("----------------------------------------------------");
+                TextPresent.CardStatusBWin(Convert.ToInt32(_aCards.Count), Convert.ToInt32(_bCards.Count));
+                Console.WriteLine();
 
                 _stats.warDones += 1;
                 WAR();
             }
         }
 
-
+        
         bool warPossible = true;
         private void WAR()
         {
 
             if (_aCards.Count <= 4)
             {
-                GameIsFinished();
+                Console.WriteLine("----------------------------------------------------");
+                Console.WriteLine("A do not have enough cards to complete war.");
+                Console.WriteLine("----------------------------------------------------");
                 warPossible = false;
+                winner = "B";
+                TextPresent.WinnerText(winner);
+
+                GameIsFinished();
             }
             else if (_bCards.Count <= 4)
             {
-                GameIsFinished();
+                Console.WriteLine("----------------------------------------------------");
+                Console.WriteLine("B do not have enough cards to complete war.");
+                Console.WriteLine("----------------------------------------------------");
                 warPossible = false;
+                winner = "A";
+                TextPresent.WinnerText(winner);
+
+                GameIsFinished();
             }
             for (int i = 0; i < 3; i++)
             {
@@ -279,18 +318,6 @@ namespace CardGame.Games
             _bCards.RemoveRange(0, 3);
         }
 
-        private void HandlingWarPot(List<Card> pot, List<Card> WinnerCardList, List<Card> LooserCardList)
-        {
-            _warPot.Add(_aCards[0]);
-            _warPot.Add(_bCards[0]);
-            WinnerCardList.Remove(WinnerCardList[0]);
-            LooserCardList.Remove(LooserCardList[0]);
-            foreach (var card in _warPot)
-            {
-                WinnerCardList.Add(card);
-            }
-            pot.Clear();
-        }
 
         private void HandlingPot(List<Card> pot, List<Card> WinnerCardList, List<Card> LooserCardList)
         {
@@ -298,11 +325,22 @@ namespace CardGame.Games
             pot.Add(_bCards[0]);
             WinnerCardList.Remove(WinnerCardList[0]);
             LooserCardList.Remove(LooserCardList[0]);
-            foreach (var card in _pot)
+
+            Random random = new Random();
+            int index = random.Next(0, 1);
+            if(index == 0)
             {
-                WinnerCardList.Add(card);
+                WinnerCardList.Add(_pot[0]);
+                WinnerCardList.Add(_pot[1]);
+                pot.Clear();
             }
-            pot.Clear();
+            else
+            {
+                WinnerCardList.Add(_pot[1]);
+                WinnerCardList.Add(_pot[0]);
+                pot.Clear();
+            }
+
         }
 
         private void HandlingCardFromTopToBottom()
@@ -332,9 +370,8 @@ namespace CardGame.Games
             Console.Clear();
             Console.WriteLine("Gaming is Started...");
         }
-        /// <summary>
-        /// Logic for dealing cards
-        /// </summary>
+      
+
         private void giveCards()
         {
             foreach (var card in _cardListShuffled)

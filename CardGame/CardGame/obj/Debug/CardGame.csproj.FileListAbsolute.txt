@@ -10,3 +10,4 @@ C:\Users\Jonas\Documents\GitHub\CardGame\CardGame\CardGame\bin\Debug\CardGame.pd
 C:\Users\Jonas\Documents\GitHub\CardGame\CardGame\CardGame\obj\Debug\CardGame.csproj.CoreCompileInputs.cache
 C:\Users\Jonas\Documents\GitHub\CardGame\CardGame\CardGame\obj\Debug\CardGame.exe
 C:\Users\Jonas\Documents\GitHub\CardGame\CardGame\CardGame\obj\Debug\CardGame.pdb
+C:\Users\Jonas\Documents\GitHub\CardGame\CardGame\CardGame\obj\Debug\CardGame.csprojAssemblyReference.cache

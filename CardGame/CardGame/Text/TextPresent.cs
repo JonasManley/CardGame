@@ -37,5 +37,24 @@ namespace CardGame.Text
             Thread.Sleep(3000);
             Console.Clear();
         }
+
+        public void WinnerText(string winner)
+        {
+            Console.WriteLine("---------------------------------------------------------------------------");
+            Console.WriteLine("***                            WINNER IS:                               ***");
+            Console.WriteLine("---------------------------------------------------------------------------");
+            Console.WriteLine("***                                                                     ***");
+            Console.WriteLine($"***                                   {winner}                                 ***");
+            Console.WriteLine("***                                                                     ***");
+            Console.WriteLine("---------------------------------------------------------------------------");
+        }
+
+        public void CardStatusBWin(int aCardAmout, int bCardAmout)
+        {
+            Console.WriteLine("---------------------------------------------------------------------------");
+            Console.WriteLine("***                           CARD STATUS                               ***");
+            Console.WriteLine($"***                  A has: {aCardAmout} and B: {bCardAmout}                  ***");
+            Console.WriteLine("---------------------------------------------------------------------------");
+        }
     }
 }
