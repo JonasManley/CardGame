@@ -54,11 +54,11 @@ namespace CardGame.Games
         {
             while (_aCards.Count > 1 && _bCards.Count > 1 && warPossible == true)
             {
-                if(_stats.battlesDone == 26 && _bCards.Count == 26)
-                {
-                    _shuffle.ShuffleCards(_bCards);
-                }
-                else if (_aCards[0].cardValue != "J" && _aCards[0].cardValue != "D" && _aCards[0].cardValue != "K" && _aCards[0].cardValue != "A" &&
+                //if(_stats.battlesDone == 26)
+                //{
+                //    Fix infinite scenario
+                //}
+                if (_aCards[0].cardValue != "J" && _aCards[0].cardValue != "D" && _aCards[0].cardValue != "K" && _aCards[0].cardValue != "A" &&
                       _bCards[0].cardValue != "J" && _bCards[0].cardValue != "D" && _bCards[0].cardValue != "K" && _bCards[0].cardValue != "A")
                 {
                     HandlingNormalCard();
@@ -93,7 +93,8 @@ namespace CardGame.Games
                     var inputPlayagian = Console.ReadKey();
                     switch (inputPlayagian.Key)
                     {
-                        case ConsoleKey.P:
+                        case ConsoleKey.Enter:
+                            ClearPreviousGame();
                             play();
                             break;
                         case ConsoleKey.X:
@@ -106,6 +107,23 @@ namespace CardGame.Games
                     TextPresent.EndText();
                     break;
             }
+        }
+
+        private void ClearPreviousGame()
+        {
+            _a.assignedCards.Clear();
+            _b.assignedCards.Clear();
+            _cardListShuffled.Clear();
+            _aCards.Clear();
+            _bCards.Clear();
+            _warPot.Clear();
+            _pot.Clear();
+            _nextCardPotA.Clear();
+            _nextCardPotB.Clear();
+            _stats.battlesDone = 0;
+            _stats.PlayerARoundsWon = 0;
+            _stats.PlayerBRoundsWon = 0;
+            _stats.warDones = 0;
         }
 
 
@@ -241,9 +259,7 @@ namespace CardGame.Games
             {
                 if (_aCards.Count <= 3)
                 {
-                    Console.WriteLine("A does not have enough cards to play war...");
-                    Console.Clear();
-                    Console.WriteLine("----B WINS!!!----");
+                    GameIsFinished();
                     warPossible = false;
                 }
                 _warPot.Add(_aCards[i]);
@@ -253,9 +269,7 @@ namespace CardGame.Games
             {
                 if (_bCards.Count <= 3)
                 {
-                    Console.WriteLine("B does not have enough cards to play war...");
-                    Console.Clear();
-                    Console.WriteLine("----A WINS!!!----");
+                    GameIsFinished();
                     warPossible = false;
                 }
                 _warPot.Add(_bCards[i]);

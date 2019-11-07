@@ -28,6 +28,7 @@ namespace CardGame.Model
         public List<Card> assignedCards
         {
             get { return _assignedCards; }
+            set { _assignedCards = value; }
         }
         public int cardAmount
         {

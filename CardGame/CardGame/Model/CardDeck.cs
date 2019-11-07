@@ -13,13 +13,12 @@ namespace CardGame
     {
         private FileReader _fileReader;
         private List<Card> _cardList;
-        
+        private Shuffle _Shuffle = new Shuffle();
 
         public CardDeck()
         {
             _fileReader = new FileReader("C:/Users/Jonas/Documents/GitHub/CardGame/Cards.txt");
             _cardList = new List<Card>();
-            _shuffledList = new List<Card>();
 
             CreateDeck();
         }
@@ -38,7 +37,7 @@ namespace CardGame
         }
         public int shuffledCardListLength
         {
-            get { return _shuffledList.Count(); }
+            get { return _shuffledList.Count(); }     //_shuffledList if form the base class Shuffle, therefor its public 
         }
 
         private void CreateDeck()
@@ -59,7 +58,7 @@ namespace CardGame
         
         private void Shuffle()
         {
-            ShuffleCards(_cardList);
+            _Shuffle.ShuffleCards(_cardList);
         }
 
 

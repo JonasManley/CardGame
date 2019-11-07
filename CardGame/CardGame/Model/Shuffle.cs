@@ -9,7 +9,7 @@ namespace CardGame.Model
 {
     public class Shuffle
     {
-        public List<Card> _shuffledList;
+        public List<Card> _shuffledList = new List<Card>();
         private Random _random = new Random();
 
         //Fisher–Yates shuffle algorithm - https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_.22inside-out.22_algorithm 
@@ -25,6 +25,7 @@ namespace CardGame.Model
                 else
                 {
                     var temp = _shuffledList[i];
+
                     _shuffledList[i] = item;
                     _shuffledList.Add(temp);
                 }
