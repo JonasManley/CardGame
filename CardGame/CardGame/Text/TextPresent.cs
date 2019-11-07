@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace CardGame.Text
 {
-    class Welcome
+    class TextPresent
     {
-        public Welcome()
+        public TextPresent()
         {
 
         }

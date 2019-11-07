@@ -16,6 +16,7 @@ namespace CardGame.Games
         private Player _b;
 
         private CardDeck _LoadedCardDeck;
+        private Shuffle _shuffle = new Shuffle();
 
         private List<Card> _cardList;
         private List<Card> _cardListShuffled;
@@ -26,7 +27,7 @@ namespace CardGame.Games
         private List<Card> _pot = new List<Card>();
         private List<Card> _nextCardPotA = new List<Card>();
         private List<Card> _nextCardPotB = new List<Card>();
-        private Welcome welcome = new Welcome();
+        private TextPresent TextPresent = new TextPresent();
 
         private Stats _stats = new Stats();
 
@@ -43,9 +44,8 @@ namespace CardGame.Games
 
         public void play()
         {
-            welcome.WelcomeText();
+            TextPresent.WelcomeText();
             Setup();
-
             GameLogic();
         }
 
@@ -54,7 +54,11 @@ namespace CardGame.Games
         {
             while (_aCards.Count > 1 && _bCards.Count > 1 && warPossible == true)
             {
-                if (_aCards[0].cardValue != "J" && _aCards[0].cardValue != "D" && _aCards[0].cardValue != "K" && _aCards[0].cardValue != "A" &&
+                if(_stats.battlesDone == 26 && _bCards.Count == 26)
+                {
+                    _shuffle.ShuffleCards(_bCards);
+                }
+                else if (_aCards[0].cardValue != "J" && _aCards[0].cardValue != "D" && _aCards[0].cardValue != "K" && _aCards[0].cardValue != "A" &&
                       _bCards[0].cardValue != "J" && _bCards[0].cardValue != "D" && _bCards[0].cardValue != "K" && _bCards[0].cardValue != "A")
                 {
                     HandlingNormalCard();
@@ -64,24 +68,44 @@ namespace CardGame.Games
                     HandlingFaceCards();
                 }
             }
-            Console.WriteLine("Game is fisished, pres enter to see stats or X to quit ");
+            GameIsFinished();
+        }
 
+
+        private void GameIsFinished()
+        {
+            Console.WriteLine("Game is fisished, pres enter to see stats or X to quit ");
             var input = Console.ReadKey();
+            Console.Clear();
+
             switch (input.Key) //Switch on Key enum
             {
                 case ConsoleKey.Enter:
-                    Console.WriteLine($"Total Games Done:"+_stats.battlesDone);
+                    Console.WriteLine("---------------------------------------------------------------------");
+                    Console.WriteLine($"Total Games Done:" + _stats.battlesDone);
                     Console.WriteLine($"wars done:" + _stats.warDones);
                     Console.WriteLine($"Games Won by Player A:" + _stats.PlayerARoundsWon);
                     Console.WriteLine($"Games Won by Player B:" + _stats.PlayerBRoundsWon);
                     Console.WriteLine($"Percentage For occurrence of wars:" + _stats.percentageForWar());
+                    Console.WriteLine("---------------------------------------------------------------------");
+
+                    Console.WriteLine("Want to Play agian? press P or X for exit");
+                    var inputPlayagian = Console.ReadKey();
+                    switch (inputPlayagian.Key)
+                    {
+                        case ConsoleKey.P:
+                            play();
+                            break;
+                        case ConsoleKey.X:
+                            TextPresent.EndText();
+                            break;
+                    }
                     break;
                 case ConsoleKey.X:
                     Console.Clear();
-                    welcome.EndText();
+                    TextPresent.EndText();
                     break;
             }
-            
         }
 
 
@@ -205,16 +229,12 @@ namespace CardGame.Games
 
             if (_aCards.Count <= 4)
             {
-                Console.WriteLine("A does not have enough cards to play war...");
-                Console.Clear();
-                Console.WriteLine("----B WINS!!!----");
+                GameIsFinished();
                 warPossible = false;
             }
             else if (_bCards.Count <= 4)
             {
-                Console.WriteLine("B does not have enough cards to play war...");
-                Console.Clear();
-                Console.WriteLine("----A WINS!!!----");
+                GameIsFinished();
                 warPossible = false;
             }
             for (int i = 0; i < 3; i++)
@@ -287,7 +307,7 @@ namespace CardGame.Games
             Console.WriteLine("loading card set...");
             Console.WriteLine(_LoadedCardDeck.cardListLength + " Loaded cards");
             Console.WriteLine("Shuffling cards...");
-            _LoadedCardDeck.Shuffel(new Random(), _LoadedCardDeck.cardList);
+            _LoadedCardDeck.ShuffleCards(_LoadedCardDeck.cardList);
             Console.WriteLine("Card deck have been shuffled");
             Console.WriteLine($"Gives cards to {_a.name} and {_b.name}");
             giveCards();
