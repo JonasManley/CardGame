@@ -185,10 +185,7 @@ namespace CardGame.Games
             }
             else if (Convert.ToInt32(_aCards[0].cardValue) == Convert.ToInt32(_bCards[0].cardValue))
             {
-                Console.WriteLine("----------------------------------------------------");
-                Console.WriteLine("                WAR!!!!!!                 ");
-                Console.WriteLine($"a has: {_aCards[0].cardValue} and b has: {_bCards[0].cardValue }");
-                Console.WriteLine("----------------------------------------------------");
+                TextPresent.warStarted(_aCards[0].cardValue, _bCards[0].cardValue);
                 TextPresent.CardStatusBWin(Convert.ToInt32(_aCards.Count), Convert.ToInt32(_bCards.Count));
 
                 _stats.warDones += 1;
@@ -255,10 +252,7 @@ namespace CardGame.Games
             }
             else if (equivalentValueA == equivalentValueB)
             {
-                Console.WriteLine("----------------------------------------------------");
-                Console.WriteLine("                WAR!!!!!!                 ");
-                Console.WriteLine($"a has: {_aCards[0].cardValue} and b has: {_bCards[0].cardValue }");
-                Console.WriteLine("----------------------------------------------------");
+                TextPresent.warStarted(_aCards[0].cardValue, _bCards[0].cardValue);
                 TextPresent.CardStatusBWin(Convert.ToInt32(_aCards.Count), Convert.ToInt32(_bCards.Count));
                 Console.WriteLine();
 
@@ -274,9 +268,7 @@ namespace CardGame.Games
 
             if (_aCards.Count <= 4)
             {
-                Console.WriteLine("----------------------------------------------------");
-                Console.WriteLine("A do not have enough cards to complete war.");
-                Console.WriteLine("----------------------------------------------------");
+                TextPresent.NotEnoughCardsWar("A");
                 warPossible = false;
                 winner = "B";
                 TextPresent.WinnerText(winner);
@@ -285,9 +277,7 @@ namespace CardGame.Games
             }
             else if (_bCards.Count <= 4)
             {
-                Console.WriteLine("----------------------------------------------------");
-                Console.WriteLine("B do not have enough cards to complete war.");
-                Console.WriteLine("----------------------------------------------------");
+                TextPresent.NotEnoughCardsWar("B");
                 warPossible = false;
                 winner = "A";
                 TextPresent.WinnerText(winner);

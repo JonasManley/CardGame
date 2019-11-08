@@ -56,5 +56,20 @@ namespace CardGame.Text
             Console.WriteLine($"***                  A has: {aCardAmout} and B: {bCardAmout}                  ***");
             Console.WriteLine("---------------------------------------------------------------------------");
         }
+
+        public void NotEnoughCardsWar(String whoHasNoCards)
+        {
+            Console.WriteLine("---------------------------------------------------------------------------");
+            Console.WriteLine($"***                  {whoHasNoCards}do not have enough cards to complete war.             ***");
+            Console.WriteLine("---------------------------------------------------------------------------");
+        }
+
+        public void warStarted(string aCardValue, string bCardValue)
+        {
+            Console.WriteLine("---------------------------------------------------------------------------");
+            Console.WriteLine("***                             WAR!!!!!!                               ***");
+            Console.WriteLine($"***                  a has: {aCardValue} and b has: {bCardValue}                              ***");
+            Console.WriteLine("---------------------------------------------------------------------------");
+        }
     }
 }
